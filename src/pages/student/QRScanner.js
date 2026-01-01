@@ -21,76 +21,67 @@ import {
   FaUserTie,
   FaMapMarkerAlt
 } from 'react-icons/fa';
-import QrScanner from 'react-qr-scanner';
+import QRScanner from '../../components/common/QRScanner';
 import { studentService } from '../../services/student';
 import { formatDateTime } from '../../utils/helpers';
 import { ATTENDANCE_STATUS_COLORS } from '../../utils/constants';
 import './QRScanner.css';
 
-const QRScanner = () => {
+const QRScannerPage = () => {
   const [scanning, setScanning] = useState(true);
-  const [scanResult, setScanResult] = useState(null);
   const [attendanceData, setAttendanceData] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const handleScan = async (result) => {
-    if (result && scanning) {
-      setScanning(false);
-      setLoading(true);
-      setError('');
+  const handleScan = async (qrData) => {
+    setScanning(false);
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await studentService.scanQRCode(
+        qrData.code,
+        qrData.lectureId
+      );
       
-      try {
-        const qrData = JSON.parse(result.text);
+      if (response.success) {
+        setAttendanceData(response.data);
+        setSuccess(true);
+        setShowModal(true);
         
-        const response = await studentService.scanQRCode(
-          qrData.code,
-          qrData.lectureId
-        );
-        
-        if (response.success) {
-          setAttendanceData(response.data);
-          setSuccess(true);
-          setScanResult(result);
-          setShowModal(true);
-          
-          // Reset scanner after 3 seconds
-          setTimeout(() => {
-            setScanning(true);
-            setScanResult(null);
-            setSuccess(false);
-          }, 3000);
-        } else {
-          setError(response.error || 'Failed to mark attendance');
+        // Reset scanner after 3 seconds
+        setTimeout(() => {
+          setScanning(true);
           setSuccess(false);
-          
-          // Reset scanner after 2 seconds
-          setTimeout(() => {
-            setScanning(true);
-            setScanResult(null);
-          }, 2000);
-        }
-      } catch (error) {
-        console.error('Scan error:', error);
-        setError('Invalid QR code. Please try again.');
+        }, 3000);
+      } else {
+        setError(response.error || 'Failed to mark attendance');
         setSuccess(false);
         
         // Reset scanner after 2 seconds
         setTimeout(() => {
           setScanning(true);
-          setScanResult(null);
         }, 2000);
-      } finally {
-        setLoading(false);
       }
+    } catch (error) {
+      console.error('Scan error:', error);
+      setError('Invalid QR code. Please try again.');
+      setSuccess(false);
+      
+      // Reset scanner after 2 seconds
+      setTimeout(() => {
+        setScanning(true);
+      }, 2000);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleError = (err) => {
-    console.error('Scanner error:', err);
-    setError('Camera error. Please check permissions and try again.');
+  const handleError = (error) => {
+    console.error('Scanner error:', error);
+    setError('Scanner error: ' + error);
   };
 
   const handlePrint = () => {
@@ -112,105 +103,25 @@ const QRScanner = () => {
 
       <Row>
         <Col lg={6} className="mb-4">
-          <Card className="border-0 shadow-sm h-100">
-            <Card.Header className="bg-white">
-              <h5 className="mb-0 fw-bold d-flex align-items-center">
-                <FaCamera className="me-2" />
-                QR Code Scanner
-              </h5>
-            </Card.Header>
-            <Card.Body>
-              {error && (
-                <Alert variant="danger" className="mb-3">
-                  <FaTimesCircle className="me-2" />
-                  {error}
-                </Alert>
-              )}
-              
-              {success && (
-                <Alert variant="success" className="mb-3">
-                  <FaCheckCircle className="me-2" />
-                  Attendance marked successfully!
-                </Alert>
-              )}
-
-              <div className="scanner-wrapper">
-                {scanning ? (
-                  <>
-                    <QrScanner
-                      delay={300}
-                      onError={handleError}
-                      onScan={handleScan}
-                      constraints={{
-                        audio: false,
-                        video: {
-                          facingMode: 'environment',
-                          width: { ideal: 1280 },
-                          height: { ideal: 720 }
-                        }
-                      }}
-                      style={{
-                        width: '100%',
-                        height: '300px',
-                        borderRadius: '10px',
-                        overflow: 'hidden'
-                      }}
-                    />
-                    <div className="scanner-overlay">
-                      <div className="scan-line" />
-                      <div className="text-center mt-5">
-                        <FaQrcode size={48} className="text-white mb-3" />
-                        <p className="text-white mb-0">
-                          Point camera at QR code
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="processing text-center py-5">
-                    {loading ? (
-                      <>
-                        <Spinner animation="border" variant="primary" className="mb-3" />
-                        <p className="mb-0">Processing attendance...</p>
-                      </>
-                    ) : (
-                      <div className="text-center">
-                        <FaCheckCircle 
-                          size={48} 
-                          className={`mb-3 ${success ? 'text-success' : 'text-danger'}`}
-                        />
-                        <p className="mb-0">
-                          {success ? 'Attendance marked!' : 'Scan failed. Try again.'}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-4">
-                <h6 className="mb-3">Instructions:</h6>
-                <ul className="list-unstyled">
-                  <li className="mb-2">
-                    <Badge bg="primary" className="me-2">1</Badge>
-                    Point camera at the QR code
-                  </li>
-                  <li className="mb-2">
-                    <Badge bg="primary" className="me-2">2</Badge>
-                    Ensure good lighting
-                  </li>
-                  <li className="mb-2">
-                    <Badge bg="primary" className="me-2">3</Badge>
-                    Hold steady for 2-3 seconds
-                  </li>
-                  <li>
-                    <Badge bg="primary" className="me-2">4</Badge>
-                    Only scan during lecture time
-                  </li>
-                </ul>
-              </div>
-            </Card.Body>
-          </Card>
+          <QRScanner
+            onScan={handleScan}
+            onError={handleError}
+            scanning={scanning}
+          />
+          
+          {error && (
+            <Alert variant="danger" className="mt-3">
+              <FaTimesCircle className="me-2" />
+              {error}
+            </Alert>
+          )}
+          
+          {success && (
+            <Alert variant="success" className="mt-3">
+              <FaCheckCircle className="me-2" />
+              Attendance marked successfully!
+            </Alert>
+          )}
         </Col>
 
         <Col lg={6} className="mb-4">
@@ -391,4 +302,4 @@ const QRScanner = () => {
   );
 };
 
-export default QRScanner;
+export default QRScannerPage;
