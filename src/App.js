@@ -38,7 +38,25 @@ import SystemStats from './pages/admin/SystemStats';
 import NotFound from './pages/error/NotFound';
 import Unauthorized from './pages/error/Unauthorized';
 
+// Initialize API connection test on startup
+const initializeApp = () => {
+  // Test backend connection
+  fetch(`${process.env.REACT_APP_API_URL || 'https://in-attendance-backend.onrender.com/api'}/health`)
+    .then(response => {
+      if (!response.ok) {
+        console.warn('Backend API is not reachable');
+      }
+    })
+    .catch(error => {
+      console.error('Failed to connect to backend:', error);
+    });
+};
+
 function App() {
+  useEffect(() => {
+    initializeApp();
+  }, []);
+
   return (
     <HelmetProvider>
       <AuthProvider>
