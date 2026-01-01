@@ -1,0 +1,32 @@
+.error-page {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.error-icon {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.error-page .card {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.error-page h1 {
+  color: #333;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.error-page .btn {
+  border-radius: 10px;
+  font-weight: 500;
+}
