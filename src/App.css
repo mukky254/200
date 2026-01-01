@@ -1,0 +1,74 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  transition: margin-left 0.3s;
+}
+
+.sidebar-open .main-content {
+  margin-left: 250px;
+}
+
+/* Toast Notifications */
+.Toastify__toast {
+  border-radius: 10px;
+  font-family: inherit;
+}
+
+.Toastify__toast--success {
+  background-color: rgba(76, 201, 240, 0.9);
+  color: white;
+}
+
+.Toastify__toast--error {
+  background-color: rgba(247, 37, 133, 0.9);
+  color: white;
+}
+
+.Toastify__toast--warning {
+  background-color: rgba(255, 158, 0, 0.9);
+  color: white;
+}
+
+.Toastify__toast--info {
+  background-color: rgba(72, 149, 239, 0.9);
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 15px;
+  }
+  
+  .sidebar-open .main-content {
+    margin-left: 0;
+  }
+  
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    padding: 10px;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+  }
+}
