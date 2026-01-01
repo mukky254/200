@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+  baseURL: process.env.REACT_APP_API_URL || 'https://in-attendance-backend.onrender.com/api',
   timeout: 30000, // 30 seconds
   headers: {
     'Content-Type': 'application/json',
@@ -37,7 +37,8 @@ api.interceptors.response.use(
       switch (response.status) {
         case 401:
           // Unauthorized - token expired or invalid
-          if (window.location.pathname !== '/login') {
+          if (!window.location.pathname.includes('/login') && 
+              !window.location.pathname.includes('/register')) {
             toast.error('Session expired. Please login again.');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
@@ -48,7 +49,9 @@ api.interceptors.response.use(
         case 403:
           // Forbidden - insufficient permissions
           toast.error('You do not have permission to access this resource.');
-          window.location.href = '/unauthorized';
+          if (!window.location.pathname.includes('/unauthorized')) {
+            window.location.href = '/unauthorized';
+          }
           break;
           
         case 404:
