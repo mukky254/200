@@ -1,0 +1,50 @@
+.navbar-shadow {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid #eee;
+  z-index: 1030;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color) !important;
+}
+
+.user-avatar .avatar-initials {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.notification-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.dropdown-menu {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  min-width: 250px;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  margin: 2px;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(67, 97, 238, 0.1);
+}
+
+.dropdown-header {
+  font-weight: 600;
+  color: var(--dark-color);
+  padding: 0.75rem 1.25rem;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+}
