@@ -1,0 +1,93 @@
+.auth-page {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.auth-container {
+  animation: fadeIn 0.5s ease;
+}
+
+.auth-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.auth-card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.auth-card .input-group-text {
+  background-color: #f8f9fa;
+  border-right: none;
+}
+
+.auth-card .form-control {
+  border-left: none;
+  padding-left: 0;
+}
+
+.auth-card .form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+.auth-card .input-group:focus-within {
+  box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+  border-radius: 8px;
+}
+
+.auth-card .input-group:focus-within .input-group-text {
+  border-color: #4361ee;
+}
+
+.auth-card .btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  font-weight: 500;
+}
+
+.auth-card .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.demo-logins .btn-outline-primary:hover {
+  background-color: #4361ee;
+  color: white;
+}
+
+.demo-logins .btn-outline-success:hover {
+  background-color: #4cc9f0;
+  color: white;
+}
+
+.demo-logins .btn-outline-info:hover {
+  background-color: #4895ef;
+  color: white;
+}
+
+.progress {
+  background-color: #e9ecef;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+}
+
+@media (max-width: 576px) {
+  .auth-card {
+    border-radius: 10px;
+  }
+  
+  .auth-title {
+    font-size: 1.5rem;
+  }
+}
